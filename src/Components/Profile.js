@@ -2,8 +2,6 @@ import React from "react";
 import { getCharacterById } from "../Services/characters";
 import "./profile.scss";
 import { getEpisodeById } from "../Services/episodes";
-import List from "@material-ui/core/List";
-import ListItem from "@material-ui/core/ListItem";
 import { Button } from "@material-ui/core";
 import { NavLink } from "react-router-dom";
 

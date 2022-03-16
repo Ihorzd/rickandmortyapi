@@ -1,0 +1,13 @@
+.upload{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    .upload__img{
+        width: 40px;
+        height: 40px;
+    }
+    .img_none{
+        display: none;
+    }
+   
+}

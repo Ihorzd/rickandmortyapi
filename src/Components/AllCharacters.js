@@ -3,19 +3,15 @@ import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemText from "@material-ui/core/ListItemText";
 import Input from "@material-ui/core/Input";
-import { getAllCharacters,getCharactersById,getSearchCharacter } from "../Services/characters";
+import { getAllCharacters, getSearchCharacter } from "../Services/characters";
 
 import { NavLink } from "react-router-dom";
 import "./allCharacter.scss";
 import Like from "./Like";
 import { Button } from "@material-ui/core";
+import Upload from "./Upload";
+import SignIn from './SignIn'
 
-const btnStyle = {
-    margin: "40px",
-    border: "5px solid pink",
-    background: "red"
-  };
-  const btnDefault = {};
 
 class AllCharacters extends React.Component {
   state = {
@@ -33,11 +29,13 @@ class AllCharacters extends React.Component {
         })
         .catch(() => {
           alert("Nothing was found");
-          window.location.reload();
+          getAllCharacters(this.state.searchValue).then((response) => {
+            this.setState({ characters: response.data.results});
+          });
         });
     }
   };
-
+  
   componentDidMount() {
     getAllCharacters(this.state.searchValue).then((response) => {
       this.setState({ characters: response.data.results});
@@ -59,8 +57,9 @@ class AllCharacters extends React.Component {
 
   render() {
     return (
-      <div>
+      <div className="container">
         <header>
+          <SignIn/>
           <Input
             placeholder="Search by Name"
             onChange={(e) => {
@@ -69,7 +68,7 @@ class AllCharacters extends React.Component {
           />
         </header>
         <main>
-            <Button onClick={this.showLikedName}>Show liked Characters</Button>
+            <Button className="btnLikeShow" onClick={this.showLikedName}>Show liked Characters</Button>
            <List>
                {this.state.showLikedDate.map((element)=>{
                    return(
@@ -93,6 +92,7 @@ class AllCharacters extends React.Component {
                     </ListItem>
                   </NavLink>
                 </div>
+                <Upload item={item}/>
                 <Like item={item}
                 handleDataLikes={this.handleDataLikes} 
                 likesData={this.state.likesData}
