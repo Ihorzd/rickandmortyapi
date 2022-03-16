@@ -1,0 +1,38 @@
+
+.card{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-left: 0;
+    color: cornflowerblue;
+   
+    header{
+        font-family: 'Times New Roman', Times, serif;
+        width: 80%;
+        h2{
+            box-shadow: 0px 0px 10px 10px rgba(0, 0, 0, .2);
+            
+        }
+      
+    }
+    section{
+        box-shadow: 0px 0px 10px 10px rgba(191, 194, 235, 0.2);
+        width: 70%;
+        li{
+            list-style: none;
+        }
+    }
+    .card__navigation{
+        width: 50%;
+        height: 35px;
+        margin-top: 20px;
+        .card__backbtn{
+            width: 50%;
+            height: 35px;
+            color: white;
+            background-color: lightblue;
+        }
+    }
+    
+}
+

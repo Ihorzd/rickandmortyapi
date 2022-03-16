@@ -3,10 +3,10 @@ import axios from "axios";
 
 const getEpisodesUrl=`${APP_API_URL}/episode`
 
-const getEpisodes=()=>{
-    return axios.get(getEpisodesUrl)
+const getEpisodeById=(id)=>{
+    return axios.get(`${getEpisodesUrl}/${id}`)
 }
 
 export{
-    getEpisodes
+    getEpisodeById
 }

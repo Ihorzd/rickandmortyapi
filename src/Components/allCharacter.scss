@@ -1,0 +1,49 @@
+.characters{
+    .characters__block{
+        display: flex;
+        margin: 20px;
+        box-shadow:  0px 0px 10px 10px rgba(0, 0, 0, .2);
+        .characters__info{
+           flex: 1;
+           .characters__Item{
+               font-family: 'Times New Roman', Times, serif;
+               color: cornflowerblue;
+               text-decoration: none;
+               .item__text{
+                text-decoration: none;
+               }
+           }
+        }
+        .characters__img{
+            display: flex;
+            justify-content: space-around;
+            flex: 1;
+            .characters__like{
+                display: flex;
+                justify-content: center;
+                align-items: center;
+              
+             
+            }
+            .characters__like.like{
+                background-color: black;
+            }
+            .characters__dislike{
+                display: flex;
+                justify-content: center;
+                align-items: center;
+             
+              
+            }
+            img{
+                
+                width: 16px;
+                height: 16px;
+        
+            }
+        }
+    }
+    .characters__block:hover{
+        box-shadow: none;
+    }
+}

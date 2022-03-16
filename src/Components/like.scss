@@ -1,0 +1,15 @@
+.box{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    img{
+        width: 16px;
+        height: 16px;
+    }
+    .box__like.active{
+        background-color: lightblue;
+    }
+    .box__dislike.active{
+        background-color:lightcoral
+    }
+}
