@@ -2,107 +2,94 @@ import React from "react";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemText from "@material-ui/core/ListItemText";
+import Button from "@material-ui/core/Button";
 import Input from "@material-ui/core/Input";
-import { getAllCharacters, getSearchCharacter } from "../Services/characters";
-
+import { getCharacter } from "../Services/characters";
 import { NavLink } from "react-router-dom";
-import "./allCharacter.scss";
-import Like from "./Like";
-import { Button } from "@material-ui/core";
-import Upload from "./Upload";
-import SignIn from './SignIn'
-
 
 class AllCharacters extends React.Component {
   state = {
     characters: [],
-    likesData:[],
-    showLikedDate:[]
+    currentPage: 1,
+    searchValue: "",
   };
 
-
-  handleSearchValue = (value) => {
-    if (value !== "") {
-      getSearchCharacter(value)
-        .then((response) => {
+  nextPage = () => {
+    if (this.state.currentPage >= 0) {
+      this.setState({ currentPage: this.state.currentPage + 1 }, () =>
+        getCharacter(this.state.currentPage).then((response) => {
           this.setState({ characters: response.data.results });
         })
-        .catch(() => {
-          alert("Nothing was found");
-          getAllCharacters(this.state.searchValue).then((response) => {
-            this.setState({ characters: response.data.results});
-          });
-        });
+      );
+    }
+    console.log(this.state.currentPage);
+  };
+  prevPage = () => {
+    if (this.state.currentPage >= 1) {
+      this.setState({ currentPage: this.state.currentPage - 1 }, () =>
+        getCharacter(this.state.currentPage).then((response) => {
+          this.setState({ characters: response.data.results });
+        })
+      );
+    }
+    console.log(this.state.currentPage);
+  };
+  handleSearchValue = (value) => {
+    if (value !== "") {
+      this.setState({ searchValue: value });
     }
   };
-  
+
   componentDidMount() {
-    getAllCharacters(this.state.searchValue).then((response) => {
-      this.setState({ characters: response.data.results});
-      
-      
-      console.log(response.data);
-      console.log(this.state);
+    getCharacter(this.state.currentPage).then((response) => {
+      this.setState({ characters: response.data.results });
     });
   }
-  handleDataLikes=(item)=>{
-      this.setState({likesData:this.state.likesData.concat(item.name)})
-  }
-  removeLike=(item)=>{
-      this.setState({likesData:this.state.likesData.filter((e)=>e!=item.name)})
-  }
- showLikedName=()=>{
-    this.setState({showLikedDate:this.state.likesData})
- }
 
   render() {
+    const filtredCharecters = this.state.characters.filter((item) => {
+      return item.name
+        .toLowerCase()
+        .includes(this.state.searchValue.toLowerCase());
+    });
     return (
-      <div className="container">
-        <header>
-          <SignIn/>
-          <Input
-            placeholder="Search by Name"
-            onChange={(e) => {
-              this.handleSearchValue(e.target.value);
+      <div>
+        <Input
+        placeholder="Serch by Name"
+          onChange={(e) => {
+            this.handleSearchValue(e.target.value);
+          }}
+        />
+        <List>
+          {filtredCharecters.map((item) => (
+            <NavLink to={`/profile/${item.id}`}
+            key={item.id}>
+              <ListItem >
+                <ListItemText primary={item.name} secondary={item.status} />
+              </ListItem>
+            </NavLink>
+          ))}
+        </List>
+        <div>
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={() => {
+              this.prevPage();
             }}
-          />
-        </header>
-        <main>
-            <Button className="btnLikeShow" onClick={this.showLikedName}>Show liked Characters</Button>
-           <List>
-               {this.state.showLikedDate.map((element)=>{
-                   return(
-                       <p key={element}>{element}</p>
-                   )
-               })}
-           </List>
-          <List className="characters">
-            {this.state.characters.map((item) => {
-                return(
-              <div className="characters__block" key={item.id}>
-                <div className="characters__info">
-                  <NavLink to={`/profile/${item.id}`} 
-                  style={{ textDecoration: 'none' }}>
-                    <ListItem className="characters__Item">
-                      <ListItemText
-                        className="item__text"
-                        primary={item.name}
-                        secondary={item.status}
-                      />
-                    </ListItem>
-                  </NavLink>
-                </div>
-                <Upload item={item}/>
-                <Like item={item}
-                handleDataLikes={this.handleDataLikes} 
-                likesData={this.state.likesData}
-                removeLike={this.removeLike}/>
-               
-              </div>
-            )})}
-          </List>
-          <button onClick={()=>console.log(this.state)}>state show</button>
-        </main>
+          >
+            Preview
+          </Button>
+          <Button
+            variant="contained"
+            color="secondary"
+            onClick={() => {
+              this.nextPage();
+            }}
+          >
+            Next
+          </Button>
+        </div>
       </div>
     );
   }
